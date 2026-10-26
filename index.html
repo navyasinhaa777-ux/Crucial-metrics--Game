@@ -1,1 +1,89 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LearnWise × Kraftshala | Crucial Metrics</title>
+<style>
+:root{--navy:#243e60;--yellow:#f1ae13;--green:#dff5e5;--red:#fde5e5}
+*{box-sizing:border-box}
+body{margin:0;background:#fffdf8;color:var(--navy);font-family:Arial,sans-serif}
+header{padding:18px 7%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eee}
+.brand{font-weight:800;font-size:20px}.brand span{color:#e9a000}
+main{max-width:850px;margin:35px auto;padding:24px}
+.card{background:white;border:1px solid #eee;border-radius:22px;padding:28px;box-shadow:0 8px 30px #243e6010}
+.tag{font-size:12px;letter-spacing:2px;color:#b77d00;font-weight:bold}
+h1{font-size:clamp(30px,6vw,48px);margin:12px 0}
+h2{font-size:29px}.muted{color:#64748b;line-height:1.65}
+button{cursor:pointer;border:0;border-radius:14px;padding:14px 20px;font-size:15px;font-weight:bold}
+.primary{background:var(--yellow);color:#352700}.secondary{background:#edf2f7;color:var(--navy)}
+.primary:hover{filter:brightness(.96)}button:disabled{opacity:.4;cursor:not-allowed}
+.hero{text-align:center;padding:40px 10px}.hero-emoji{font-size:76px}
+.progress{height:8px;background:#edf0f4;border-radius:10px;overflow:hidden;margin:16px 0}
+.bar{height:100%;width:0;background:var(--yellow);transition:width .3s}
+.options{display:grid;gap:12px;margin:24px 0}
+.option{background:#f7f9fc;border:2px solid #e8edf3;text-align:left;color:var(--navy);display:flex;gap:12px;align-items:center}
+.option .letter{border-radius:50%;background:#e9eef5;width:34px;height:34px;display:grid;place-items:center;flex-shrink:0}
+.option.selected{border-color:var(--navy)}.option.correct{background:var(--green);border-color:#53a96b}.option.wrong{background:var(--red);border-color:#db7777}
+.feedback{padding:15px;border-radius:12px;margin:15px 0;line-height:1.5}
+.good{background:var(--green)}.bad{background:var(--red)}
+.lesson{background:#f4f8fc;border-radius:16px;padding:18px;margin:15px 0}
+.formula{font-size:20px;font-weight:bold;text-align:center;padding:18px;background:#fff4d5;border-radius:12px;margin:16px 0}
+footer{text-align:center;padding:25px;color:#8490a0;font-size:12px}
+.small{font-size:13px}.mascot{font-size:44px}
+@media(max-width:600px){main{padding:14px;margin:12px auto}.card{padding:20px}header{padding:15px}}
+</style>
+</head>
+<body>
+<header><div class="brand">✦ LearnWise <span>× Kraftshala</span></div><div id="score">⭐ 0 XP</div></header>
+<main><div id="app"></div></main>
+<footer>Learn by doing • Every expert starts somewhere</footer>
+<script>
+const lessons=[
+{title:"Impressions",emoji:"📱",simple:"Impressions count every time your ad appears on a screen. If one person sees your ad 3 times, that is 3 impressions.",formula:"Count every ad display",tip:"One person can create many impressions.",q:"What are impressions?",o:["The total times an ad was shown","The unique people who saw an ad","People who clicked the ad","Money spent on ads"],a:0,example:"Priya sees an ad twice and Aman sees it once. Total impressions = 3."},
+{title:"Reach",emoji:"🧑‍🤝‍🧑",simple:"Reach counts the number of different people who saw your ad at least once. A person is counted only once.",formula:"Count unique people",tip:"Reach is not the number of ad displays.",q:"Priya sees an ad twice. Aman sees it once. What is the reach?",o:["2 people","3 people","1 person","5 people"],a:0,example:"Two different people saw the ad, so reach = 2."},
+{title:"Frequency",emoji:"🔁",simple:"Frequency tells you how many times, on average, each person saw your ad.",formula:"Frequency = Impressions ÷ Reach",tip:"If 12 impressions reach 4 people, frequency is 3.",q:"There are 12 impressions and a reach of 4. What is frequency?",o:["4","3","12","8"],a:1,example:"12 ÷ 4 = 3 views per person on average."},
+{title:"CTR",emoji:"👆",simple:"Click-through rate measures what percentage of impressions turned into clicks.",formula:"CTR = (Clicks ÷ Impressions) × 100",tip:"Clicks divided by impressions, then multiply by 100.",q:"An ad gets 20 clicks from 1,000 impressions. What is CTR?",o:["0.2%","2%","20%","5%"],a:1,example:"20 ÷ 1,000 × 100 = 2%."},
+{title:"CPC",emoji:"🪙",simple:"Cost per click tells you how much you paid for each click on your ad.",formula:"CPC = Total Spend ÷ Clicks",tip:"Divide total money spent by clicks.",q:"You spend ₹500 for 10 clicks. What is CPC?",o:["₹5","₹50","₹500","₹100"],a:1,example:"₹500 ÷ 10 = ₹50 per click."},
+{title:"CPM",emoji:"📣",simple:"CPM is the cost for every 1,000 ad impressions.",formula:"CPM = (Spend ÷ Impressions) × 1,000",tip:"CPM is about impressions, not clicks.",q:"You spend ₹200 for 1,000 impressions. What is CPM?",o:["₹20","₹200","₹2,000","₹100"],a:1,example:"₹200 ÷ 1,000 × 1,000 = ₹200."},
+{title:"Conversion rate",emoji:"🎯",simple:"Conversion rate measures the percentage of clicks that resulted in a desired action, such as a purchase or signup.",formula:"Conversion rate = (Conversions ÷ Clicks) × 100",tip:"Conversions divided by clicks.",q:"5 out of 100 clicks lead to purchases. What is the conversion rate?",o:["5%","20%","0.5%","50%"],a:0,example:"5 ÷ 100 × 100 = 5%."},
+{title:"CPA",emoji:"🏆",simple:"Cost per acquisition/action tells you how much you spent to get one conversion.",formula:"CPA = Total Spend ÷ Conversions",tip:"Spend divided by conversions.",q:"You spend ₹1,000 and get 10 conversions. What is CPA?",o:["₹10","₹100","₹1,000","₹500"],a:1,example:"₹1,000 ÷ 10 = ₹100 per conversion."}
+];
+const questions=[
+{q:"CPM is ₹200, CTR is 2%, and conversion rate is 5%. What is your CPA?",o:["₹20","₹200","₹2,000","₹500"],a:0,e:"1,000 impressions cost ₹200. At 2% CTR there are 20 clicks; 5% convert = 1 conversion. CPA = ₹200."},
+{q:"CTR is 1.5%, CPC is ₹80, and conversion rate is 10%. What is CPA?",o:["₹120","₹800","₹80","₹533.33"],a:1,e:"CPA = CPC ÷ conversion rate = ₹80 ÷ 0.10 = ₹800."},
+{q:"CPM is ₹500, CTR is 4%, and conversion rate is 2%. What is CPA?",o:["₹125","₹625","₹250","₹500"],a:1,e:"1,000 impressions cost ₹500 and generate 40 clicks. At 2%, that is 0.8 conversions. CPA = ₹500 ÷ 0.8 = ₹625."},
+{q:"CPC is ₹60, CTR is 0.5%, and conversion rate is 20%. What is CPA?",o:["₹12","₹60","₹300","₹120"],a:2,e:"CPA = CPC ÷ conversion rate = ₹60 ÷ 0.20 = ₹300."},
+{q:"You spend ₹20,000. CPC is ₹100 and conversion rate is 10%. How many conversions did you get?",o:["2","20","200","100"],a:1,e:"Clicks = ₹20,000 ÷ ₹100 = 200. Conversions = 200 × 10% = 20."},
+{q:"You spend ₹10,000. CPM is ₹250 and CTR is 2%. How many clicks did you get?",o:["80","400","800","2,000"],a:2,e:"Impressions = ₹10,000 ÷ ₹250 × 1,000 = 40,000. Clicks = 40,000 × 2% = 800."},
+{q:"CPA is ₹500, conversion rate is 4%, and CTR is 2%. What is CPM?",o:["₹400","₹200","₹40","₹20"],a:0,e:"CPC = CPA × conversion rate = ₹20. CPM = CPC × CTR × 1,000 = ₹20 × 0.02 × 1,000 = ₹400."},
+{q:"CPC is ₹50 and conversion rate is 8%. What is CPA?",o:["₹4","₹400","₹625","₹50"],a:2,e:"CPA = ₹50 ÷ 0.08 = ₹625."},
+{q:"You spend ₹15,000. Your CPM is ₹300. How many impressions did you get?",o:["5,000","50,000","45,000","150,000"],a:1,e:"Impressions = ₹15,000 ÷ ₹300 × 1,000 = 50,000."},
+{q:"CPM is ₹400, CTR is 3%, and conversion rate is 4%. What is CPA?",o:["₹333.33","₹13.33","₹400","₹1,333.33"],a:0,e:"1,000 impressions cost ₹400 and generate 30 clicks. 4% convert = 1.2 conversions. CPA = ₹400 ÷ 1.2 = ₹333.33."},
+{q:"You spend ₹12,000. CPC is ₹60. Conversion rate is 5%. How many conversions did you get?",o:["10","20","100","200"],a:1,e:"Clicks = ₹12,000 ÷ ₹60 = 200. Conversions = 200 × 5% = 10."},
+{q:"CTR is 1%, CPC is ₹40, and conversion rate is 12%. What is CPA?",o:["₹480","₹333.33","₹40","₹12"],a:1,e:"CPA = ₹40 ÷ 0.12 = ₹333.33."},
+{q:"CPA is ₹500, conversion rate is 5%, and CTR is 2%. What is CPM?",o:["₹250","₹500","₹50","₹50,000"],a:0,e:"CPC = ₹500 × 5% = ₹25. CPM = ₹25 × 2% × 1,000 = ₹500. (The correct calculation gives ₹500.)",fix:1},
+{q:"CPM is ₹600, CTR is 1.5%, and conversion rate is 5%. What is CPA?",o:["₹800","₹600","₹400","₹200"],a:0,e:"1,000 impressions cost ₹600, generating 15 clicks and 0.75 conversions. CPA = ₹600 ÷ 0.75 = ₹800."},
+{q:"You got 100 conversions at a CPA of ₹400. Your conversion rate was 10%. How many clicks did you get?",o:["100","250","1,000","4,000"],a:2,e:"100 conversions ÷ 10% = 1,000 clicks."},
+{q:"CPC is ₹100, CTR is 3%, and conversion rate is 15%. What is CPA?",o:["₹15","₹300","₹666.67","₹100"],a:2,e:"CPA = ₹100 ÷ 0.15 = ₹666.67."},
+{q:"Your maximum CPA is ₹3,000 and click-to-conversion rate is 9%. What is the maximum CPC?",o:["₹270","₹3,000","₹333.33","₹30"],a:0,e:"Maximum CPC = maximum CPA × conversion rate = ₹3,000 × 0.09 = ₹270."}
+];
+let mode="lesson",idx=0,selected=null,score=0,answers=[],stage="cover";
+const app=document.getElementById("app");
+function renderCover(){stage="cover";app.innerHTML=`<section class="card hero"><div class="hero-emoji">🚀</div><div class="tag">META ADS • KEY METRICS</div><h1>Crucial Metrics</h1><p class="muted">Become a marketing detective! Learn the concepts, solve fun quizzes and master the numbers one mission at a time.</p><div class="lesson"><b>📚 Learn</b> → <b>🧠 Practise</b> → <b>🏆 Level up</b></div><button class="primary" onclick="start()">Start Learning →</button></section>`}
+function start(){mode="lesson";idx=0;score=0;answers=[];renderLesson()}
+function renderLesson(){stage="lesson";let l=lessons[idx];app.innerHTML=`<div class="tag">LEARN MODE • ${idx+1} OF ${lessons.length}</div><div class="progress"><div class="bar" style="width:${(idx+1)/lessons.length*100}%"></div></div><section class="card"><div style="font-size:52px">${l.emoji}</div><h2>${l.title}</h2><p class="muted">${l.simple}</p><div class="formula">${l.formula}</div><div class="lesson">💡 <b>Remember:</b> ${l.tip}<p>${l.example}</p></div><button class="primary" onclick="startQuiz()">Try a quick quiz →</button></section>`}
+function startQuiz(){mode="lessonquiz";selected=null;renderQuestion(lessons[idx],false)}
+function renderQuestion(q,calc){stage="question";app.innerHTML=`<div class="tag">${calc?"CHALLENGE MODE":"QUICK CHECK"} • ${calc?idx+1:idx+1} / ${calc?questions.length:lessons.length}</div><div class="progress"><div class="bar" style="width:${calc?(idx+1)/questions.length*100:(idx+1)/lessons.length*100}%"></div></div><section class="card"><div class="tag">QUESTION</div><h2>${q.q}</h2><div class="options">${q.o.map((o,i)=>`<button class="option" id="opt${i}" onclick="choose(${i})"><span class="letter">${"ABCD"[i]}</span>${o}</button>`).join("")}</div><div id="feedback"></div><button class="primary" id="submit" disabled onclick="submitAnswer(${calc})">Submit Answer →</button></section>`}
+function choose(i){if(document.getElementById("feedback").innerHTML)return;selected=i;document.querySelectorAll(".option").forEach((b,j)=>b.classList.toggle("selected",i===j));document.getElementById("submit").disabled=false}
+function submitAnswer(calc){if(selected===null)return;let q=calc?questions[idx]:lessons[idx];let ok=selected===(q.fix??q.a);answers.push({question:q.q,correct:ok,chosen:selected});if(ok)score+=10;document.getElementById("score").textContent="⭐ "+score+" XP";document.querySelectorAll(".option").forEach((b,j)=>{b.disabled=true;if(j===(q.fix??q.a))b.classList.add("correct");if(j===selected&&!ok)b.classList.add("wrong")});document.getElementById("feedback").innerHTML=`<div class="feedback ${ok?"good":"bad"}"><div class="mascot">${ok?"🥳":"😅"} ${ok?"Brilliant! Well done!":"Almost there — let's revisit this."}</div><p>${ok?"You got it right!":"Good try. Keep learning!"}</p><b>Explanation:</b> ${q.e||q.example}</div>`;document.getElementById("submit").textContent=calc?"Continue →":"Continue →";document.getElementById("submit").onclick=()=>next(calc)}
+function next(calc){selected=null;if(!calc){idx++;if(idx<lessons.length)renderLesson();else{mode="calc";idx=0;renderCalcIntro()}}else{idx++;if(idx<questions.length)renderQuestion(questions[idx],true);else renderEnd()}}
+function renderCalcIntro(){stage="calcintro";app.innerHTML=`<section class="card hero"><div class="hero-emoji">🕵️</div><div class="tag">CHALLENGE MODE</div><h1>You're ready!</h1><p class="muted">Now use what you've learned to solve 17 real-world digital marketing calculations.</p><div class="formula">17 questions • 10 XP per correct answer</div><button class="primary" onclick="idx=0;renderQuestion(questions[idx],true)">Start Challenge →</button></section>`}
+function renderEnd(){stage="end";let correct=answers.filter(a=>a.correct).length;app.innerHTML=`<section class="card hero"><div class="hero-emoji">${correct>=13?"🏆":"🌟"}</div><div class="tag">MISSION COMPLETE</div><h1>${correct>=13?"Marketing superstar!":"Great effort!"}</h1><p class="muted">You completed the challenge. Every attempt helps you improve.</p><div class="formula">${correct} / ${answers.length} correct</div><h2>${score} XP ⭐</h2><p>Keep practising the topics you found tricky.</p><button class="primary" onclick="start()">Play again ↻</button><button class="secondary" onclick="showReview()">Review answers</button></section>`}
+function showReview(){app.innerHTML=`<section class="card"><h2>Your learning report</h2>${answers.map((a,i)=>`<div class="lesson">${a.correct?"✅":"🔁"} <b>${i+1}. ${a.question}</b><br><span class="small">${a.correct?"Correct":"Review this concept"}</span></div>`).join("")}<button class="primary" onclick="start()">Play again</button></section>`}
+renderCover();
+</script>
+</body>
+</html>
+
